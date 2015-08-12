@@ -20,12 +20,15 @@ instance Show Piece where
 instance Show Board where
   show = showBoard
 
+top = "\n  ┌────────────────┐\n"
+bottm = "  └────────────────┘\n   a b c d e f g h\n"
+
 showBoard :: Board -> String
-showBoard (Board lines) = foldr (++) "a b c d e f g h" lineStrings
+showBoard (Board lines) = top ++ foldr (++) bottm lineStrings
   where lineStrings = zipWith showLine lines [8,7..]
 
 showLine :: [Maybe Piece] -> Int -> String
-showLine squares n = foldr (++) (show n ++ "\n") squareStrings
+showLine squares n = "  │" ++ foldr (++) ("│ " ++ show n ++ "\n") squareStrings
     where squareStrings = zipWith showSquare squares colors
           colors = if even n then concat $ repeat [White, Black]
                    else concat $ repeat [Black, White]
