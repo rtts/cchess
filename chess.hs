@@ -1,34 +1,7 @@
 data Piece = Piece Color Type deriving Eq
 data Color = White | Black deriving Eq
 data Type = King | Queen | Rook | Bishop | Knight | Pawn deriving Eq
-data Square = Square (Maybe Piece)
 data Board = Board [[Maybe Piece]] deriving Eq
-
-initialBoard = Board $ map (map readPiece)
-               [['r','n','b','q','k','b','n','r'],
-                ['p','p','p','p','p','p','p','p'],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                ['P','P','P','P','P','P','P','P'],
-                ['R','N','B','Q','K','B','N','R']]
-
-instance Read Square where
---    readsPrec _ " " = [(Nothing, " ")]
-    readsPrec _ ('♔':s) = [(Square (Just (Piece White King)), s)]
-                  -- ("♕", Just (Piece White Queen)),
-                  -- ("♖", Just (Piece White Rook)),
-                  -- ("♗", Just (Piece White Bishop)),
-                  -- ("♘", Just (Piece White Knight)),
-                  -- ("♙", Just (Piece White Pawn)),
-                  -- ("♚", Just (Piece Black King)),
-                  -- ("♛", Just (Piece Black Queen)),
-                  -- ("♜", Just (Piece Black Rook)),
-                  -- ("♝", Just (Piece Black Bishop)),
-                  -- ("♞", Just (Piece Black Knight)),
-                  -- ("♟", Just (Piece Black Pawn))]
-    readsPrec _ _ = []
 
 instance Show Piece where
   show (Piece White King)   = "♔ "
@@ -68,6 +41,16 @@ showSquare (Just p) Black = invertString . show . invertPiece $ p
 
 invertString :: String -> String
 invertString s = "\27[7m" ++ s ++ "\27[27m"
+
+initialBoard = Board $ map (map readPiece)
+               [['r','n','b','q','k','b','n','r'],
+                ['p','p','p','p','p','p','p','p'],
+                [' ',' ',' ',' ',' ',' ',' ',' '],
+                [' ',' ',' ',' ',' ',' ',' ',' '],
+                [' ',' ',' ',' ',' ',' ',' ',' '],
+                [' ',' ',' ',' ',' ',' ',' ',' '],
+                ['P','P','P','P','P','P','P','P'],
+                ['R','N','B','Q','K','B','N','R']]
 
 readPiece :: Char -> Maybe Piece
 readPiece ' ' = Nothing
