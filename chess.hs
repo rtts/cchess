@@ -22,13 +22,15 @@ instance Show Board where
 
 top = "\n  ┌────────────────┐\n"
 bottm = "  └────────────────┘\n   a b c d e f g h\n"
+left = "  │"
+right n = "│ " ++ show n
 
 showBoard :: Board -> String
-showBoard (Board lines) = top ++ foldr (++) bottm lineStrings
+showBoard (Board lines) = top ++ unlines lineStrings ++ bottm
   where lineStrings = zipWith showLine lines [8,7..]
 
 showLine :: [Maybe Piece] -> Int -> String
-showLine squares n = "  │" ++ foldr (++) ("│ " ++ show n ++ "\n") squareStrings
+showLine squares n = left ++ concat squareStrings ++ right n
     where squareStrings = zipWith showSquare squares colors
           colors = if even n then concat $ repeat [White, Black]
                    else concat $ repeat [Black, White]
@@ -45,16 +47,69 @@ showSquare (Just p) Black = invertString . show . invertPiece $ p
 invertString :: String -> String
 invertString s = "\27[7m" ++ s ++ "\27[27m"
 
-initialBoard = Board $ map (map readPiece)
-               [['r','n','b','q','k','b','n','r'],
-                ['p','p','p','p','p','p','p','p'],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                [' ',' ',' ',' ',' ',' ',' ',' '],
-                ['P','P','P','P','P','P','P','P'],
-                ['R','N','B','Q','K','B','N','R']]
+standardBoard = mapBoard
+  [['r','n','b','q','k','b','n','r'],
+   ['p','p','p','p','p','p','p','p'],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   ['P','P','P','P','P','P','P','P'],
+   ['R','N','B','Q','K','B','N','R']]
 
+hordeChess = mapBoard
+  [['r','n','b','q','k','b','n','r'],
+   ['p','p','p','p','p','p','p','p'],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   ['P','P','P','P','P','P','P','P'],
+   ['P','P','P','P','P','P','P','P'],
+   ['P','P','P','P','P','P','P','P'],
+   ['P','P','P','P','P','P','P','P']]
+
+pawnsGame = mapBoard
+  [[' ',' ',' ',' ','k',' ',' ',' '],
+   ['p','p','p','p','p','p','p','p'],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   ['P','P','P','P','P','P','P','P'],
+   [' ',' ',' ',' ','K',' ',' ',' ']]
+
+legalsGame = mapBoard
+  [['r','n','b','q','k','b','n','r'],
+   ['p','p','p','p','p','p','p','p'],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ','P','P','P','P',' ',' '],
+   [' ','P','P',' ',' ','P','P',' '],
+   ['P','P','P','P','P','P','P','P'],
+   ['R','N','B',' ','K','B','N','R']]
+
+peasantsRevolt = mapBoard
+  [[' ','n','n',' ','k',' ','n',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   ['P','P','P','P','P','P','P','P'],
+   [' ',' ',' ',' ','K',' ',' ',' ']]
+
+upsideDownBoard = mapBoard
+  [['R','N','B','Q','K','B','N','R'],
+   ['P','P','P','P','P','P','P','P'],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   [' ',' ',' ',' ',' ',' ',' ',' '],
+   ['p','p','p','p','p','p','p','p'],
+   ['r','n','b','q','k','b','n','r']]
+
+emptyBoard =  Board [[Nothing|_<-[1..8]]|_<-[1..8]]
+
+mapBoard chars = Board $ map (map readPiece) chars
 readPiece :: Char -> Maybe Piece
 readPiece ' ' = Nothing
 readPiece 'r' = Just (Piece Black Rook)
