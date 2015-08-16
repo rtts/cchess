@@ -1,3 +1,7 @@
+module System.Console.Chess (
+  standardBoard)
+where
+
 data Piece = Piece Color Type deriving Eq
 data Color = White | Black deriving Eq
 data Type = King | Queen | Rook | Bishop | Knight | Pawn deriving Eq

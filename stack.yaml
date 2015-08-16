@@ -1,0 +1,7 @@
+flags: {}
+packages:
+- '.'
+extra-deps:
+- chesshs-0.2.1
+- haskeline-0.7.2.1
+resolver: lts-3.0

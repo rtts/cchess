@@ -1,0 +1,41 @@
+name:                console-chess
+version:             0.0.1
+synopsis:            Console chess frontend for UCI-compliant chess engines
+description:         Please see README.md
+homepage:            http://github.com/rtts/cchess
+license:             GPL-3
+license-file:        LICENSE
+author:              JJ Vens
+maintainer:          jj@rtts.eu
+category:            Games
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     System.Console.Chess
+  build-depends:       base >= 4.7 && < 5
+                     , chesshs == 0.2.1
+                     , haskeline == 0.7.2.1
+  default-language:    Haskell2010
+
+executable cchess
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , console-chess
+  default-language:    Haskell2010
+
+-- test-suite cchess-test
+--   type:                exitcode-stdio-1.0
+--   hs-source-dirs:      test
+--   main-is:             Spec.hs
+--   build-depends:       base
+--                      , console-chess
+--   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+--   default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/rtts/cchess
