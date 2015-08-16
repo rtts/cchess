@@ -1,6 +1,8 @@
 Console Chess
 =============
 
+<img src="http://rtts.eu/media/chessboard.gif" align="right">
+
 Console Chess is a simple frontend for [UCI](http://www.shredderchess.com/chess-info/features/uci-universal-chess-interface.html)-compliant chess engines. To play a game of chess you need a console/terminal application that can display [Unicode chess symbols](https://en.wikipedia.org/wiki/Chess_symbols_in_Unicode) and a [chess engine](http://computer-chess.org/doku.php?id=computer_chess:wiki:lists:chess_engine_list).
 
 Installation
